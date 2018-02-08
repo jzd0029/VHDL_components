@@ -13,7 +13,7 @@
 --  
 -- Dependencies: none
 -- 
--- Revision: 1.00 - Completed w/ correct simulation
+-- Revision: 1.00 - Completed w/ correct simulation, no timing
 -- Revision 0.01 - File Created
 -- Additional Comments:
 -- 
