@@ -52,7 +52,7 @@ end component SPI_CTRL;
 
 begin
 
---RegTest: Syn_REG generic map (8) port map (CLK=>tb_clk, SCK=>tb_sck, INTpulse=>tb_int, EN=>tb_en);
+--RegTest: SPI_CTRL generic map (8) port map (CLK=>tb_clk, SCK=>tb_sck, INTpulse=>tb_int, EN=>tb_en);
 MUT: SPI_CTRL port map (tb_clk, tb_sck, tb_int, tb_en);
 tb_clk<=not tb_clk after 5 ns; --generate clock signal
 tb_sck<=not tb_sck after 60 ns;
