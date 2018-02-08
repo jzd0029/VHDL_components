@@ -1,0 +1,111 @@
+;----------------load and store the hex to 7-segment conversions
+LOAD s0, 00000001'b
+STORE s0, 00
+LOAD s0, 01001111'b
+STORE s0, 01
+LOAD s0, 00010010'b
+STORE s0, 02
+LOAD s0, 00000110'b
+STORE s0, 03
+LOAD s0, 01001100'b
+STORE s0, 04
+LOAD s0, 00100100'b
+STORE s0, 05
+LOAD s0, 00100000'b
+STORE s0, 06
+LOAD s0, 00001111'b
+STORE s0, 07
+LOAD s0, 00000000'b
+STORE s0, 08
+LOAD s0, 00001100'b
+STORE s0, 09
+LOAD s0, 00001000'b
+STORE s0, 0A
+LOAD s0, 01100000'b
+STORE s0, 0B
+LOAD s0, 00110001'b
+STORE s0, 0C
+LOAD s0, 01000010'b
+STORE s0, 0D
+LOAD s0, 00110000'b
+STORE s0, 0E
+LOAD s0, 00111000'b
+STORE s0, 0F
+;----------------initialize register file
+LOAD s1, 00
+LOAD s2, 00
+LOAD s3, 00
+LOAD s4, 00
+;----------------initialize one-cold enable outputs
+LOAD s5, 0E
+LOAD s6, 0D
+LOAD s7, 0B
+LOAD s8, 07
+;----------------enable the isr
+ENABLE INTERRUPT
+;----------------begin the main loop
+Begin:
+
+;first output of display
+FETCH s9, (s1) ;decode s1 into 7-segment
+OUTPUT s9, 01 ;pass 7-segment value to output
+OUTPUT s5, 02 ;pass 7-segment enable to output
+LOAD sA, 00 ;initialize the counter
+Delay1: ADD sA,01 ;Delay to avoid bleeding
+COMPARE sA,02 ; about a 15.36us delay
+JUMP NZ, Delay1 ;count until FF
+
+;second output of display
+FETCH s9, (s2) ;decode s2 into 7-segment
+OUTPUT s9, 01 ;pass 7-segment value to output
+OUTPUT s6, 02 ;pass 7-segment enable to output
+LOAD sA, 00 ;initialize the counter
+Delay2: ADD sA,01 ;Delay to avoid bleeding
+COMPARE sA,02 ; about a 15.36us delay
+JUMP NZ, Delay2 ;count until FF
+
+;third output of display
+FETCH s9, (s3) ;decode s3 into 7-segment
+OUTPUT s9, 01 ;pass 7-segment value to output
+OUTPUT s7, 02 ;pass 7-segment enable to output
+LOAD sA, 00 ;initialize the counter
+Delay3: ADD sA,01 ;Delay to avoid bleeding
+COMPARE sA,02 ; about a 15.36us delay
+JUMP NZ, Delay3 ;count until FF
+
+;fourth output of display
+FETCH s9, (s4) ;decode s4 into 7-segment
+OUTPUT s9, 01 ;pass 7-segment value to output
+OUTPUT s8, 02 ;pass 7-segment enable to output
+LOAD sA, 00 ;initialize the counter
+Delay4: ADD sA,01 ;Delay to avoid bleeding
+COMPARE sA,02 ; about a 15.36us delay
+JUMP NZ, Delay4 ;count until FF
+
+;jump to repeat main loop
+JUMP Begin
+
+;----------------begin the ISR
+ADDRESS 3FF
+;
+ISR : INPUT s0,00 ;input the hex value and address
+AND s0,3F ;only care about first 6 bits
+LOAD sB, s0
+AND sB, 0F ;hex value in sB
+AND s0, 30 ;2 bit address in s0 at bits5-4
+COMPARE s0, 30 ;check for reg 4
+JUMP NZ, nexts3
+LOAD s4, sB ;load the hex value to the 4th register
+JUMP ENDISR
+nexts3: COMPARE s0, 20 ;check for reg 3
+JUMP NZ, nexts2
+LOAD s3, sB ;load the hex value to the 3rd register
+JUMP ENDISR
+nexts2: COMPARE s0, 10 ;check for reg 2
+JUMP NZ, nexts1
+LOAD s2, sB ;load the hex value to the 2nd register
+JUMP ENDISR
+nexts1: 
+LOAD s1, sB ;load the hex value to the 1st register
+ENDISR:
+RETURNI ENABLE
