@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 02/07/2018 09:35:31 AM
 -- Design Name: Test Bench for designed components
--- Module Name: Test_Bench - Behavioral
+-- Module Name: AsynRST_REG_TB - Behavioral
 -- Project Name: CAL Training Program
 -- Target Devices: XC7A100tcsg324-1
 -- Tool Versions: 
@@ -33,11 +33,11 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Test_Bench is
+entity AsynRST_REG_TB is
 --  Port ( );
-end Test_Bench;
+end AsynRST_REG_TB;
 
-architecture Behavioral of Test_Bench is
+architecture Behavioral of AsynRST_REG_TB is
 
 constant B:integer := 8;
 constant T:integer := 5; --half of a clock period in ns
