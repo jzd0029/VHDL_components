@@ -11,7 +11,7 @@
 -- Description: This design is a test bench for validating the operation 
 --              of designed components in simulation, specifically for the
 --              asynchronous reset register
--- Dependencies: Asyn_REG.vhd
+-- Dependencies: AsynRST_REG.vhd
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
