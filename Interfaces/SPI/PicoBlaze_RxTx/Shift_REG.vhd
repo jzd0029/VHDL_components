@@ -31,17 +31,14 @@ entity Shift_REG is
 end Shift_REG;
 
 architecture RTL of Shift_REG is
-	signal Qold: std_logic_vector (N-1 downto 0):=(others => '0'); 
-	signal Qnew: std_logic_vector (N-1 downto 0):=(others => '0'); 
-	signal DMSB: std_logic:= '0';
+	signal Qold: std_logic_vector (N-1 downto 0):=(others => '0');  
 
 begin
-	Qold <= Qnew;
-	Q <= Qnew;
+	Q <= Qold;
 	P1: process (CLK) --sets the sensitivity to clock change
 	begin
 		if rising_edge(CLK) then
-			Qnew <= DIN & Qold(N-1 downto 1); --right shift output
+			Qold <= DIN & Qold(N-1 downto 1); --right shift output
 		end if;
 	end process;
 
